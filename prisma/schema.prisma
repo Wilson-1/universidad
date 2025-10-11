@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Carrera {
+  id          Int         @id @default(autoincrement())
+  nombre      String
+  duracion    Int
+  ciclos      Ciclo[]
+  estudiantes Estudiante[]
+  docentes    Docente[]
+  materias    Materia[]
+}
+
+model Ciclo {
+  id        Int         @id @default(autoincrement())
+  numero    Int
+  carrera   Carrera     @relation(fields: [carreraId], references: [id])
+  carreraId Int
+  estudiantes Estudiante[]
+}
+
+model Estudiante {
+  id         Int          @id @default(autoincrement())
+  nombre     String
+  apellido   String
+  correo     String       @unique
+  carrera    Carrera      @relation(fields: [carreraId], references: [id])
+  carreraId  Int
+  ciclo      Ciclo        @relation(fields: [cicloId], references: [id])
+  cicloId    Int
+  inscripciones Inscripcion[]
+}
+
+model Docente {
+  id         Int       @id @default(autoincrement())
+  nombre     String
+  apellido   String
+  especialidad String
+  carrera    Carrera   @relation(fields: [carreraId], references: [id])
+  carreraId  Int
+  materias   Materia[]
+}
+
+model Materia {
+  id         Int          @id @default(autoincrement())
+  nombre     String
+  creditos   Int
+  carrera    Carrera      @relation(fields: [carreraId], references: [id])
+  carreraId  Int
+  docente    Docente      @relation(fields: [docenteId], references: [id])
+  docenteId  Int
+  inscripciones Inscripcion[]
+}
+
+model Inscripcion {
+  id             Int        @id @default(autoincrement())
+  cicloAcademico String
+  notaFinal      Float?
+  estudiante     Estudiante @relation(fields: [estudianteId], references: [id])
+  estudianteId   Int
+  materia        Materia    @relation(fields: [materiaId], references: [id])
+  materiaId      Int
+}
