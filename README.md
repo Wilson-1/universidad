@@ -1,98 +1,138 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+#  Universidad Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST modular desarrollada con **NestJS**, **Prisma** y **PostgreSQL**, que gestiona la información de docentes, estudiantes, materias, ciclos, carreras e inscripciones.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+##  Propósito
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Desarrollar una **API REST modular** con NestJS y Prisma que exponga endpoints `GET` para todas las tablas del modelo de datos y, como mínimo, la estructura funcional del `POST` para crear registros en cada recurso principal.
 
-## Project setup
+---
 
-```bash
-$ npm install
+##  Resultados de Aprendizaje
+
+- Configurar un proyecto NestJS con Prisma y una base de datos PostgreSQL.  
+- Implementar controladores y servicios con buenas prácticas (DTOs, validación, manejo de errores).  
+- Exponer endpoints `GET` (listar y obtener por id) para todas las tablas.  
+- Implementar `POST` básico (DTO + validación + servicio + respuesta estandarizada).  
+
+---
+
+##  Modelo de Datos
+
+El modelo de datos incluye las siguientes entidades:
+
+- **Carrera** – Contiene la información de las carreras universitarias.  
+- **Ciclo** – Representa los ciclos académicos asociados a una carrera.  
+- **Estudiante** – Almacena los datos de los estudiantes y su relación con la carrera y ciclo.  
+- **Docente** – Contiene los docentes con su especialidad y relación con carrera.  
+- **Materia** – Materias dictadas por los docentes, pertenecientes a una carrera.  
+- **Inscripción** – Relación entre estudiantes y materias, con notas y ciclo académico.
+
+---
+
+##  Requisitos Técnicos
+
+- **NestJS** v10+  
+- **Prisma** v5+  
+- **TypeScript**  
+- **PostgreSQL**  
+- **class-validator** y **class-transformer** para validaciones  
+- **dotenv** para manejo de variables de entorno  
+
+---
+
+##  Estructura del Proyecto
+
+```plaintext
+universidad-backend/
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
+│
+├── src/
+│   ├── carrera/
+│   ├── ciclo/
+│   ├── docente/
+│   ├── estudiante/
+│   ├── materia/
+│   ├── inscripcion/
+│   ├── prisma/
+│   └── main.ts
+│
+├── .env
+├── package.json
+└── README.md
+
 ```
 
-## Compile and run the project
+---
+
+##  Comandos para Crear el Proyecto
 
 ```bash
-# development
-$ npm run start
+# 1️⃣ Crear el proyecto base
+nest new universidad-backend
 
-# watch mode
-$ npm run start:dev
+# 2️⃣ Instalar dependencias
+cd universidad-backend
+npm install @nestjs/config @nestjs/class-validator @nestjs/class-transformer
+npm install @prisma/client
+npm install prisma --save-dev
 
-# production mode
-$ npm run start:prod
+# 3️⃣ Inicializar Prisma
+npx prisma init
+
+# 4️⃣ Crear migración inicial
+npx prisma migrate dev --name init
+
+# 5️⃣ Generar módulos CRUD
+nest g resource carrera
+nest g resource ciclo
+nest g resource docente
+nest g resource estudiante
+nest g resource materia
+nest g resource inscripcion
+
 ```
 
-## Run tests
+##  Variables de Entorno (.env)
 
-```bash
-# unit tests
-$ npm run test
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/universidad?schema=public"
+PORT=3000
+```
+##  Ejecución del Proyecto
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+npm run start:dev
 ```
 
-## Deployment
+##  Scripts útiles
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+- Crear migración
+```
+npx prisma migrate dev --name init
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+- Visualizar base de datos
+```
+npx prisma studio
+```
 
-## Resources
+- Formatear el código
+```
+npm run format
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+- Verificar errores de lint
+```
+npm run lint
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+##  Autor
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Wilson Criollo**  
+Proyecto académico — *Sistema de Control Universitario*  
+Desarrollado con **NestJS**, **Prisma** y **PostgreSQL**
