@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Query, UseGuards } from '@nestjs/common';
 import { CarreraService } from './carrera.service';
 import { CreateCarreraDto } from './dto/create-carrera.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('carrera')
 export class CarreraController {
@@ -22,6 +23,7 @@ export class CarreraController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   create(@Body() dto: CreateCarreraDto) {
     return this.carreraService.create(dto);
   }

@@ -67,3 +67,12 @@ model Inscripcion {
   materia        Materia    @relation(fields: [materiaId], references: [id])
   materiaId      Int
 }
+
+// Usuario para autenticación básica con JWT
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  nombre   String?
+  role     String @default("student")
+}

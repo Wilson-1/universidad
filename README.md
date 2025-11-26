@@ -121,6 +121,51 @@ npx prisma migrate dev --name init
 npx prisma studio
 ```
 
+---
+
+## Autenticación (JWT) — Instrucciones rápidas
+
+1. Añadimos un modelo `User` en `prisma/schema.prisma`. Para aplicar los cambios ejecuta:
+
+```powershell
+npx prisma migrate dev --name add_user
+npx prisma generate
+```
+
+2. Crear un usuario inicial (ejemplo usando el script incluido):
+
+```powershell
+npx ts-node scripts/seed-user.ts --email admin@uni.com --password secret --name Admin
+```
+
+3. Iniciar el servidor:
+
+```powershell
+npm run start:dev
+```
+
+4. Login (obtén el token):
+
+POST `http://localhost:3000/auth/login`
+
+Body JSON:
+
+```json
+{
+	"email": "admin@uni.com",
+	"password": "secret"
+}
+```
+
+Respuesta:
+
+```json
+{ "access_token": "..." }
+```
+
+5. Usar el token para llamadas protegidas (`Authorization: Bearer <token>`). Ejemplo: `POST /carrera` ahora requiere un JWT válido.
+
+
 - Formatear el código
 ```
 npm run format
