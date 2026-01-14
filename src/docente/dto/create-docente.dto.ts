@@ -12,4 +12,8 @@ export class CreateDocenteDto {
 
   @IsInt()
   carreraId: number;
+
+  activo?: boolean;
+
+  tiempoCompleto?: boolean;
 }

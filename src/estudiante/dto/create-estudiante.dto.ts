@@ -15,5 +15,7 @@ export class CreateEstudianteDto {
 
   @IsInt()
   cicloId: number;
+
+  activo?: boolean;
 }
 

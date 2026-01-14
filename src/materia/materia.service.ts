@@ -19,4 +19,9 @@ export class MateriaService {
   async create(data: CreateMateriaDto) {
     return this.prisma.materia.create({ data });
   }
+
+  // Parte 1: Obtener las materias asociadas a una carrera específica
+  async findByCarrera(carreraId: number) {
+    return this.prisma.materia.findMany({ where: { carreraId }, include: { carrera: true, docente: true } });
+  }
 }

@@ -12,4 +12,6 @@ export class CreateMateriaDto {
 
   @IsInt()
   docenteId: number;
+
+  cupo?: number;
 }

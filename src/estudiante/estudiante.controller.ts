@@ -1,4 +1,22 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
+import { EstudianteService } from './estudiante.service';
 
 @Controller('estudiante')
-export class EstudianteController {}
+export class EstudianteController {
+	constructor(private readonly service: EstudianteService) {}
+
+	@Get('active-with-career')
+	findActiveWithCareer() {
+		return this.service.findActiveWithCareer();
+	}
+
+	@Get('search')
+	findFiltered(@Query('activo') activo?: string, @Query('carreraId') carreraId?: string, @Query('cicloAcademico') cicloAcademico?: string) {
+		const opts: any = {};
+		if (typeof activo !== 'undefined') opts.activo = activo === 'true';
+		if (carreraId) opts.carreraId = Number(carreraId);
+		if (cicloAcademico) opts.cicloAcademico = cicloAcademico;
+		return this.service.findFiltered(opts);
+	}
+}
+

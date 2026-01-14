@@ -30,6 +30,7 @@ model Estudiante {
   nombre     String
   apellido   String
   correo     String       @unique
+  activo     Boolean      @default(true)
   carrera    Carrera      @relation(fields: [carreraId], references: [id])
   carreraId  Int
   ciclo      Ciclo        @relation(fields: [cicloId], references: [id])
@@ -42,6 +43,8 @@ model Docente {
   nombre     String
   apellido   String
   especialidad String
+  activo     Boolean   @default(true)
+  tiempoCompleto Boolean @default(false)
   carrera    Carrera   @relation(fields: [carreraId], references: [id])
   carreraId  Int
   materias   Materia[]
@@ -51,6 +54,7 @@ model Materia {
   id         Int          @id @default(autoincrement())
   nombre     String
   creditos   Int
+  cupo       Int          @default(0)
   carrera    Carrera      @relation(fields: [carreraId], references: [id])
   carreraId  Int
   docente    Docente      @relation(fields: [docenteId], references: [id])
