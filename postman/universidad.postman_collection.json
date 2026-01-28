@@ -1,0 +1,164 @@
+{
+  "info": {
+    "name": "Universidad API",
+    "_postman_id": "6d7f2e1a-0000-4000-8000-000000000001",
+    "description": "Colección para probar la API de universidad (importar en Postman 7)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "const token = json.token || json.access_token || json?.data?.token;",
+              "if (token) pm.environment.set('token', token);",
+              "pm.test('Login returned token', () => pm.expect(!!token).to.be.true);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Carrera - List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/carrera?page=1&limit=10", "host": ["{{baseUrl}}"], "path": ["carrera"], "query": [{"key":"page","value":"1"},{"key":"limit","value":"10"}] }
+      }
+    },
+    {
+      "name": "Carrera - Get by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/carrera/1", "host": ["{{baseUrl}}"], "path": ["carrera","1"] }
+      }
+    },
+    {
+      "name": "Carrera - Get by nombre",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/carrera/nombre/Ingenieria", "host": ["{{baseUrl}}"], "path": ["carrera","nombre","Ingenieria"] }
+      }
+    },
+    {
+      "name": "Carrera - Create (protected)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Ingenieria\",\n  \"duracion\": 5\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/carrera", "host": ["{{baseUrl}}"], "path": ["carrera"] }
+      }
+    },
+    {
+      "name": "Estudiante - Active with career",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/estudiante/active-with-career", "host": ["{{baseUrl}}"], "path": ["estudiante","active-with-career"] }
+      }
+    },
+    {
+      "name": "Estudiante - Search",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/estudiante/search?activo=true&carreraId=1&cicloAcademico=2025-1", "host": ["{{baseUrl}}"], "path": ["estudiante","search"], "query": [{"key":"activo","value":"true"},{"key":"carreraId","value":"1"},{"key":"cicloAcademico","value":"2025-1"}] }
+      }
+    },
+    {
+      "name": "Estudiante - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Perez\",\n  \"correo\": \"juan.perez@example.com\",\n  \"carreraId\": 1,\n  \"cicloId\": 1,\n  \"activo\": true\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/estudiante", "host": ["{{baseUrl}}"], "path": ["estudiante"] }
+      }
+    },
+    {
+      "name": "Materia - by carrera",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/materia/by-carrera/1", "host": ["{{baseUrl}}"], "path": ["materia","by-carrera","1"] }
+      }
+    },
+    {
+      "name": "Docente - multiple subjects",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/docente/multiple-subjects", "host": ["{{baseUrl}}"], "path": ["docente","multiple-subjects"] }
+      }
+    },
+    {
+      "name": "Docente - search",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/docente/search?tiempoCompleto=true", "host": ["{{baseUrl}}"], "path": ["docente","search"], "query": [{"key":"tiempoCompleto","value":"true"}] }
+      }
+    },
+    {
+      "name": "Inscripcion - by student and ciclo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/inscripcion/student/1/ciclo/2025-1", "host": ["{{baseUrl}}"], "path": ["inscripcion","student","1","ciclo","2025-1"] }
+      }
+    },
+    {
+      "name": "Inscripcion - report",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/inscripcion/report", "host": ["{{baseUrl}}"], "path": ["inscripcion","report"] }
+      }
+    },
+    {
+      "name": "Inscripcion - enroll",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cicloAcademico\": \"2025-1\",\n  \"estudianteId\": 1,\n  \"materiaId\": 2,\n  \"notaFinal\": 4.5\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/inscripcion/enroll", "host": ["{{baseUrl}}"], "path": ["inscripcion","enroll"] }
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" }
+  ]
+}

@@ -6,26 +6,49 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   private readonly logger = new Logger(PrismaService.name);
 
   constructor() {
-    // You can pass options to PrismaClient here if needed (e.g. log level)
-    super();
+    const logger = new Logger(PrismaService.name);
+
+    let adapterFound = false;
+    const options: any = {};
+
+    try {
+      const adapterPkg = require('@prisma/adapter-pg');
+      const AdapterClass =
+        adapterPkg?.PrismaPg || adapterPkg?.default || adapterPkg?.PrismaAdapter || adapterPkg?.PrismaPgAdapter || adapterPkg?.PrismaPgAdapterFactory;
+
+      if (AdapterClass) {
+        const adapterInstance = new AdapterClass({ connectionString: process.env.DATABASE_URL });
+        options.adapter = adapterInstance;
+        adapterFound = true;
+        logger.log('Using @prisma/adapter-pg for PrismaClient');
+      } else {
+        logger.warn('@prisma/adapter-pg installed but no adapter constructor found');
+      }
+    } catch (err) {
+      logger.warn('@prisma/adapter-pg not found; set PRISMA_ACCELERATE_URL or install the adapter');
+    }
+
+    if (!adapterFound) {
+
+      options.accelerateUrl = process.env.PRISMA_ACCELERATE_URL || process.env.DATABASE_URL || '';
+    }
+
+    super(options as any);
+
+    (this as any)._hasAdapter = adapterFound;
   }
 
   async onModuleInit() {
-    this.logger.log('Connecting to the database...');
-    await this.$connect();
-    this.logger.log('Connected to the database');
+    if ((this as any)._hasAdapter) {
+      this.logger.log('Connecting to the database...');
+      await this.$connect();
+      this.logger.log('Connected to the database');
+    } else {
+      this.logger.warn('No Prisma adapter available; skipping automatic $connect(). Install @prisma/adapter-pg to enable DB connectivity.');
+    }
   }
 
-  /**
-   * Attach a shutdown hook so that Prisma can close the connection
-   * when Nest's application is shutting down. Call this from `main.ts`:
-   *
-   * const app = await NestFactory.create(AppModule);
-   * const prismaService = app.get(PrismaService);
-   * await prismaService.enableShutdownHooks(app);
-   */
   async enableShutdownHooks(app: INestApplication): Promise<void> {
-    // Prisma Client types for $on can be strict; cast to any to avoid TS issues
     (this as any).$on('beforeExit', async () => {
       this.logger.log('Prisma beforeExit hook triggered, closing Nest app...');
       await app.close();

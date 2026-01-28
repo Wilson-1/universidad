@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { EstudianteService } from './estudiante.service';
+import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 
 @Controller('estudiante')
 export class EstudianteController {
@@ -17,6 +18,11 @@ export class EstudianteController {
 		if (carreraId) opts.carreraId = Number(carreraId);
 		if (cicloAcademico) opts.cicloAcademico = cicloAcademico;
 		return this.service.findFiltered(opts);
+	}
+
+	@Post()
+	create(@Body() dto: CreateEstudianteDto) {
+		return this.service.create(dto);
 	}
 }
 
