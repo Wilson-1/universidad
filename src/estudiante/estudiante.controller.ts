@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, BadRequestException } from '@nestjs/common';
 import { EstudianteService } from './estudiante.service';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 
@@ -22,6 +22,7 @@ export class EstudianteController {
 
 	@Post()
 	create(@Body() dto: CreateEstudianteDto) {
+		if (!dto) throw new BadRequestException('Request body is required');
 		return this.service.create(dto);
 	}
 }

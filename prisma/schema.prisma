@@ -6,6 +6,7 @@ datasource db {
   provider = "postgresql"
 }
 
+
 model Carrera {
   id          Int         @id @default(autoincrement())
   nombre      String

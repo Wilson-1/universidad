@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 
@@ -17,7 +17,15 @@ export class EstudianteService {
   }
 
   async create(data: CreateEstudianteDto) {
-    return this.prisma.estudiante.create({ data });
+    try {
+      return await this.prisma.estudiante.create({ data });
+    } catch (e: any) {
+      // Foreign key constraint violation => likely carreraId or cicloId missing
+      if (e?.code === 'P2003') {
+        throw new BadRequestException('Foreign key constraint violated: check carreraId and cicloId exist');
+      }
+      throw e;
+    }
   }
 
   // Parte 1: Listar todos los estudiantes activos junto con su carrera

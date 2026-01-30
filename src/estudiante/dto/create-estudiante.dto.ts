@@ -1,4 +1,5 @@
-import { IsEmail, IsInt, IsString } from 'class-validator';
+import { IsEmail, IsInt, IsString, IsBoolean, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateEstudianteDto {
   @IsString()
@@ -10,12 +11,17 @@ export class CreateEstudianteDto {
   @IsEmail()
   correo: string;
 
+  @Type(() => Number)
   @IsInt()
   carreraId: number;
 
+  @Type(() => Number)
   @IsInt()
   cicloId: number;
 
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean()
   activo?: boolean;
 }
 
