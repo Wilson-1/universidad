@@ -5,7 +5,6 @@ generator clientUsuarios {
 
 datasource dbUsuarios {
   provider = "postgresql"
-  schemas  = ["usuarios", "public"]
 }
 
 model User {
@@ -22,7 +21,7 @@ model User {
   tokens          Token[]
   auditoria       AuditoriaLogin[]
 
-  @@schema("usuarios")
+
 }
 
 model Token {
@@ -34,7 +33,7 @@ model Token {
   expiresAt       DateTime
   createdAt       DateTime  @default(now())
 
-  @@schema("usuarios")
+
 }
 
 model AuditoriaLogin {
@@ -47,7 +46,7 @@ model AuditoriaLogin {
   razon           String?   // Razón del fallo si existe
   fechaIntento    DateTime  @default(now())
 
-  @@schema("usuarios")
+
 }
 
 model Permiso {
@@ -56,7 +55,7 @@ model Permiso {
   descripcion     String
   createdAt       DateTime  @default(now())
 
-  @@schema("usuarios")
+
 }
 
 model RolPermiso {
@@ -65,5 +64,5 @@ model RolPermiso {
   permisoId       Int
   createdAt       DateTime  @default(now())
 
-  @@schema("usuarios")
+
 }

@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  schemas  = ["universidad"]
 }
 
 model Carrera {
@@ -16,7 +15,7 @@ model Carrera {
   docentes    Docente[]
   materias    Materia[]
 
-  @@schema("universidad")
+
 }
 
 model Ciclo {
@@ -26,7 +25,7 @@ model Ciclo {
   carreraId   Int
   estudiantes Estudiante[]
 
-  @@schema("universidad")
+
 }
 
 model Estudiante {
@@ -41,7 +40,7 @@ model Estudiante {
   cicloId        Int
   inscripciones  Inscripcion[]
 
-  @@schema("universidad")
+
 }
 
 model Docente {
@@ -55,7 +54,7 @@ model Docente {
   carreraId      Int
   materias       Materia[]
 
-  @@schema("universidad")
+
 }
 
 model Materia {
@@ -69,7 +68,7 @@ model Materia {
   docenteId      Int
   inscripciones  Inscripcion[]
 
-  @@schema("universidad")
+
 }
 
 model Inscripcion {
@@ -81,5 +80,5 @@ model Inscripcion {
   materia        Materia    @relation(fields: [materiaId], references: [id])
   materiaId      Int
 
-  @@schema("universidad")
+
 }
