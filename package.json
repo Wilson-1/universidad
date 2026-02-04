@@ -17,7 +17,17 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "seed": "npm run seed:universidad && npm run seed:usuarios && npm run seed:reportes",
+    "seed:universidad": "node prisma/seed.js",
+    "seed:usuarios": "node prisma/seed-usuarios.js",
+    "seed:reportes": "node prisma/seed-reportes.js",
+    "db:migrate:universidad": "prisma migrate dev --schema=prisma/schema.prisma",
+    "db:migrate:reportes": "prisma migrate dev --schema=prisma/schema-reportes.prisma",
+    "db:migrate:usuarios": "prisma migrate dev --schema=prisma/schema-usuarios.prisma",
+    "db:push:universidad": "prisma db push --schema=prisma/schema.prisma",
+    "db:push:reportes": "prisma db push --schema=prisma/schema-reportes.prisma",
+    "db:push:usuarios": "prisma db push --schema=prisma/schema-usuarios.prisma"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

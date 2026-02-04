@@ -1,19 +1,18 @@
-require('dotenv').config({ path: `${__dirname}/../.env` });
+require('dotenv').config({ path: `${__dirname}/../.env.local` });
 
 const { PrismaClient } = require('@prisma/client');
 const { PrismaPg } = require('@prisma/adapter-pg');
 const { Pool } = require('pg');
-const bcrypt = require('bcryptjs');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL_UNIVERSIDAD_MIGRATE || process.env.DATABASE_URL_UNIVERSIDAD,
 });
 
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('🌱 Iniciando seeding...');
+  console.log('🌱 Iniciando seeding BD1: UNIVERSIDAD...');
 
   // Limpiar datos existentes
   console.log('🗑️ Limpiando datos existentes...');
@@ -23,38 +22,6 @@ async function main() {
   await prisma.estudiante.deleteMany();
   await prisma.ciclo.deleteMany();
   await prisma.carrera.deleteMany();
-  await prisma.user.deleteMany();
-
-  // Crear Users
-  console.log('👤 Creando usuarios...');
-  const hashedPassword = await bcrypt.hash('password123', 10);
-
-  const user1 = await prisma.user.create({
-    data: {
-      email: 'admin@universidad.com',
-      password: hashedPassword,
-      nombre: 'Administrador',
-      role: 'admin',
-    },
-  });
-
-  const user2 = await prisma.user.create({
-    data: {
-      email: 'profesor@universidad.com',
-      password: hashedPassword,
-      nombre: 'Profesor Principal',
-      role: 'teacher',
-    },
-  });
-
-  const user3 = await prisma.user.create({
-    data: {
-      email: 'estudiante@universidad.com',
-      password: hashedPassword,
-      nombre: 'Estudiante Principal',
-      role: 'student',
-    },
-  });
 
   // Crear Carreras
   console.log('🎓 Creando carreras...');

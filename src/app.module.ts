@@ -11,6 +11,7 @@ import { EstudianteModule } from './estudiante/estudiante.module';
 import { CicloModule } from './ciclo/ciclo.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { ReportesModule } from './reportes/reportes.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
     EstudianteModule,
     CicloModule,
     InscripcionModule,
+    ReportesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  schemas  = ["universidad"]
 }
-
 
 model Carrera {
   id          Int         @id @default(autoincrement())
@@ -15,6 +15,8 @@ model Carrera {
   estudiantes Estudiante[]
   docentes    Docente[]
   materias    Materia[]
+
+  @@schema("universidad")
 }
 
 model Ciclo {
@@ -23,6 +25,8 @@ model Ciclo {
   carrera     Carrera     @relation(fields: [carreraId], references: [id])
   carreraId   Int
   estudiantes Estudiante[]
+
+  @@schema("universidad")
 }
 
 model Estudiante {
@@ -36,6 +40,8 @@ model Estudiante {
   ciclo          Ciclo           @relation(fields: [cicloId], references: [id])
   cicloId        Int
   inscripciones  Inscripcion[]
+
+  @@schema("universidad")
 }
 
 model Docente {
@@ -48,6 +54,8 @@ model Docente {
   carrera        Carrera    @relation(fields: [carreraId], references: [id])
   carreraId      Int
   materias       Materia[]
+
+  @@schema("universidad")
 }
 
 model Materia {
@@ -60,6 +68,8 @@ model Materia {
   docente        Docente        @relation(fields: [docenteId], references: [id])
   docenteId      Int
   inscripciones  Inscripcion[]
+
+  @@schema("universidad")
 }
 
 model Inscripcion {
@@ -70,12 +80,6 @@ model Inscripcion {
   estudianteId   Int
   materia        Materia    @relation(fields: [materiaId], references: [id])
   materiaId      Int
-}
 
-model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  nombre   String?
-  role     String @default("student")
+  @@schema("universidad")
 }

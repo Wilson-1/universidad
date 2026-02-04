@@ -1,50 +1,33 @@
 import { Injectable, OnModuleInit, OnModuleDestroy, INestApplication, Logger } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name);
+  private pool: Pool;
 
   constructor() {
-    const logger = new Logger(PrismaService.name);
+    const pool = new Pool({
+      connectionString: process.env.DATABASE_URL_UNIVERSIDAD,
+      max: 5,
+    });
 
-    let adapterFound = false;
-    const options: any = {};
-
-    try {
-      const adapterPkg = require('@prisma/adapter-pg');
-      const AdapterClass =
-        adapterPkg?.PrismaPg || adapterPkg?.default || adapterPkg?.PrismaAdapter || adapterPkg?.PrismaPgAdapter || adapterPkg?.PrismaPgAdapterFactory;
-
-      if (AdapterClass) {
-        const adapterInstance = new AdapterClass({ connectionString: process.env.DATABASE_URL });
-        options.adapter = adapterInstance;
-        adapterFound = true;
-        logger.log('Using @prisma/adapter-pg for PrismaClient');
-      } else {
-        logger.warn('@prisma/adapter-pg installed but no adapter constructor found');
-      }
-    } catch (err) {
-      logger.warn('@prisma/adapter-pg not found; set PRISMA_ACCELERATE_URL or install the adapter');
-    }
-
-    if (!adapterFound) {
-
-      options.accelerateUrl = process.env.PRISMA_ACCELERATE_URL || process.env.DATABASE_URL || '';
-    }
-
-    super(options as any);
-
-    (this as any)._hasAdapter = adapterFound;
+    const adapter = new PrismaPg(pool);
+    super({ adapter } as any);
+    this.pool = pool;
+    this.logger.log('🔧 PrismaService (Universidad) inicializado');
   }
 
   async onModuleInit() {
-    if ((this as any)._hasAdapter) {
-      this.logger.log('Connecting to the database...');
+    try {
+      this.logger.log('Conectando a la base de datos de universidad...');
       await this.$connect();
-      this.logger.log('Connected to the database');
-    } else {
-      this.logger.warn('No Prisma adapter available; skipping automatic $connect(). Install @prisma/adapter-pg to enable DB connectivity.');
+      this.logger.log('✅ Prisma Universidad conectado exitosamente');
+    } catch (error) {
+      this.logger.error('❌ Error conectando a Universidad:', error.message);
+      throw error;
     }
   }
 
@@ -56,8 +39,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleDestroy() {
-    this.logger.log('Disconnecting from the database...');
-    await this.$disconnect();
-    this.logger.log('Disconnected from the database');
+    try {
+      await this.$disconnect();
+      await this.pool.end();
+      this.logger.log('✅ Prisma Universidad desconectado correctamente');
+    } catch (error) {
+      this.logger.error('❌ Error desconectando Universidad:', error.message);
+    }
   }
 }

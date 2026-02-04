@@ -1,0 +1,525 @@
+{
+  "info": {
+    "name": "Universidad API - 3 Databases",
+    "_postman_id": "universidad-3db-2026",
+    "description": "API Backend con 3 bases de datos separadas (Universidad, Usuarios, Reportes)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "📋 AUTH (BD: Usuarios)",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@universidad.edu\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const token = json.access_token;",
+                  "if (token) {",
+                  "  pm.environment.set('token', token);",
+                  "  pm.test('✅ Login Admin exitoso', () => pm.expect(token).to.be.truthy);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Profesor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"profesor@universidad.edu\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login - Estudiante",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"estudiante@universidad.edu\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎓 CARRERAS (BD: Universidad)",
+      "item": [
+        {
+          "name": "Listar todas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carrera",
+              "host": ["{{baseUrl}}"],
+              "path": ["carrera"]
+            }
+          }
+        },
+        {
+          "name": "Obtener por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carrera/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["carrera", "1"]
+            }
+          }
+        },
+        {
+          "name": "Obtener por nombre",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carrera/nombre/Ingenieria",
+              "host": ["{{baseUrl}}"],
+              "path": ["carrera", "nombre", "Ingenieria"]
+            }
+          }
+        },
+        {
+          "name": "Crear carrera",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ingenieria en Sistemas\",\n  \"duracion\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carrera",
+              "host": ["{{baseUrl}}"],
+              "path": ["carrera"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📚 MATERIAS (BD: Universidad)",
+      "item": [
+        {
+          "name": "Materias por carrera",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/materia/by-carrera/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["materia", "by-carrera", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍🎓 ESTUDIANTES (BD: Universidad)",
+      "item": [
+        {
+          "name": "Estudiantes activos con carrera",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiante/active-with-career",
+              "host": ["{{baseUrl}}"],
+              "path": ["estudiante", "active-with-career"]
+            }
+          }
+        },
+        {
+          "name": "Buscar estudiantes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estudiante/search?activo=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["estudiante", "search"],
+              "query": [
+                {
+                  "key": "activo",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear estudiante",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nuevo@ejemplo.com\",\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"carreraId\": 1,\n  \"cicloAcademico\": \"2025-1\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estudiante",
+              "host": ["{{baseUrl}}"],
+              "path": ["estudiante"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍🏫 DOCENTES (BD: Universidad)",
+      "item": [
+        {
+          "name": "Docentes con múltiples asignaturas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/docente/multiple-subjects",
+              "host": ["{{baseUrl}}"],
+              "path": ["docente", "multiple-subjects"]
+            }
+          }
+        },
+        {
+          "name": "Buscar docentes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/docente/search?nombre=Juan",
+              "host": ["{{baseUrl}}"],
+              "path": ["docente", "search"],
+              "query": [
+                {
+                  "key": "nombre",
+                  "value": "Juan"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📅 CICLOS (BD: Universidad)",
+      "item": [
+        {
+          "name": "Listar ciclos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ciclo",
+              "host": ["{{baseUrl}}"],
+              "path": ["ciclo"]
+            }
+          }
+        },
+        {
+          "name": "Obtener ciclo por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ciclo/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["ciclo", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear ciclo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"2025-2\",\n  \"fechaInicio\": \"2025-06-01\",\n  \"fechaFin\": \"2025-11-30\",\n  \"activo\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ciclo",
+              "host": ["{{baseUrl}}"],
+              "path": ["ciclo"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📝 INSCRIPCIONES (BD: Universidad)",
+      "item": [
+        {
+          "name": "Inscripciones por estudiante",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inscripcion/student/1/ciclo/2025-1",
+              "host": ["{{baseUrl}}"],
+              "path": ["inscripcion", "student", "1", "ciclo", "2025-1"]
+            }
+          }
+        },
+        {
+          "name": "Reporte de inscripciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inscripcion/report",
+              "host": ["{{baseUrl}}"],
+              "path": ["inscripcion", "report"]
+            }
+          }
+        },
+        {
+          "name": "Inscribir estudiante",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estudianteId\": 1,\n  \"materiaId\": 1,\n  \"notaFinal\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/inscripcion/enroll",
+              "host": ["{{baseUrl}}"],
+              "path": ["inscripcion", "enroll"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 REPORTES (BD: Reportes)",
+      "item": [
+        {
+          "name": "Crear reporte académico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estudianteId\": 1,\n  \"nombreEstudiante\": \"Maria Gómez\",\n  \"carrera\": \"Ingeniería en Sistemas\",\n  \"promedio\": 8.5,\n  \"creditosAprobados\": 45,\n  \"creditosReprobados\": 0,\n  \"tasaAprobacion\": 100,\n  \"semestre\": \"2025-1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reportes/academico",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "academico"]
+            }
+          }
+        },
+        {
+          "name": "Obtener reportes académicos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/academico",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "academico"]
+            }
+          }
+        },
+        {
+          "name": "Crear reporte de docente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"docenteId\": 1,\n  \"nombreDocente\": \"Dr. Juan López\",\n  \"especialidad\": \"Programación\",\n  \"materiasImpartidas\": 3,\n  \"estudiantesAtendidos\": 120,\n  \"calificacionPromedio\": 4.8,\n  \"semestre\": \"2025-1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reportes/docente",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "docente"]
+            }
+          }
+        },
+        {
+          "name": "Obtener reportes de docentes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/docente",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "docente"]
+            }
+          }
+        },
+        {
+          "name": "Crear reporte de carrera",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carreraId\": 1,\n  \"nombreCarrera\": \"Ingeniería en Sistemas\",\n  \"totalEstudiantes\": 150,\n  \"totalDocentes\": 12,\n  \"totalMaterias\": 48,\n  \"tasaAprobacionGral\": 92.5,\n  \"semestre\": \"2025-1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reportes/carrera",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "carrera"]
+            }
+          }
+        },
+        {
+          "name": "Obtener reportes de carreras",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/carrera",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "carrera"]
+            }
+          }
+        },
+        {
+          "name": "Obtener estadísticas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/estadisticas?tipo=ESTUDIANTE",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "estadisticas"],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "ESTUDIANTE"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

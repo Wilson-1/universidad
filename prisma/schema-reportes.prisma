@@ -1,0 +1,64 @@
+generator clientReportes {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/client-reportes"
+}
+
+datasource dbReportes {
+  provider = "postgresql"
+  schemas  = ["reportes", "public"]
+}
+
+
+model ReporteAcademico {
+  id                  Int       @id @default(autoincrement())
+  estudianteId        Int
+  nombreEstudiante    String
+  carrera             String
+  promedio            Float
+  creditosAprobados   Int
+  creditosReprobados  Int
+  tasaAprobacion      Float
+  semestre            String
+  fechaGeneracion     DateTime  @default(now())
+
+  @@schema("reportes")
+}
+
+model ReporteDocente {
+  id                  Int       @id @default(autoincrement())
+  docenteId           Int
+  nombreDocente       String
+  especialidad        String
+  materiasImpartidas  Int
+  estudiantesAtendidos Int
+  calificacionPromedio Float
+  semestre            String
+  fechaGeneracion     DateTime  @default(now())
+
+  @@schema("reportes")
+}
+
+model ReporteCarrera {
+  id                  Int       @id @default(autoincrement())
+  carreraId           Int
+  nombreCarrera       String
+  totalEstudiantes    Int
+  totalDocentes       Int
+  totalMaterias       Int
+  tasaAprobacionGral  Float
+  semestre            String
+  fechaGeneracion     DateTime  @default(now())
+
+  @@schema("reportes")
+}
+
+model Estadistica {
+  id                  Int       @id @default(autoincrement())
+  tipo                String    // "ESTUDIANTE", "DOCENTE", "CARRERA"
+  referenceId         Int
+  metrica             String    // nombre de la métrica
+  valor               Float
+  fecha               DateTime  @default(now())
+
+  @@schema("reportes")
+}

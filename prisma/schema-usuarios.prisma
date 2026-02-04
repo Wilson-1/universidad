@@ -1,0 +1,69 @@
+generator clientUsuarios {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/client-usuarios"
+}
+
+datasource dbUsuarios {
+  provider = "postgresql"
+  schemas  = ["usuarios", "public"]
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  password        String
+  nombre          String?
+  apellido        String?
+  role            String    @default("student")  // admin, teacher, student
+  activo          Boolean   @default(true)
+  verificado      Boolean   @default(false)
+  fechaCreacion   DateTime  @default(now())
+  fechaActualizacion DateTime @updatedAt
+  tokens          Token[]
+  auditoria       AuditoriaLogin[]
+
+  @@schema("usuarios")
+}
+
+model Token {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token           String    @unique
+  tipo            String    // "REFRESH", "RESET", "VERIFICATION"
+  expiresAt       DateTime
+  createdAt       DateTime  @default(now())
+
+  @@schema("usuarios")
+}
+
+model AuditoriaLogin {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress       String?
+  userAgent       String?
+  exitoso         Boolean
+  razon           String?   // Razón del fallo si existe
+  fechaIntento    DateTime  @default(now())
+
+  @@schema("usuarios")
+}
+
+model Permiso {
+  id              Int       @id @default(autoincrement())
+  nombre          String    @unique
+  descripcion     String
+  createdAt       DateTime  @default(now())
+
+  @@schema("usuarios")
+}
+
+model RolPermiso {
+  id              Int       @id @default(autoincrement())
+  rol             String    // admin, teacher, student
+  permisoId       Int
+  createdAt       DateTime  @default(now())
+
+  @@schema("usuarios")
+}
