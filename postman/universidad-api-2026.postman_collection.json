@@ -1,0 +1,635 @@
+{
+  "info": {
+    "name": "Universidad API - 3 Databases",
+    "description": "Colección completa de endpoints para pruebas. API con 3 bases de datos: Universidad, Usuarios (Auth), Reportes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Autenticación y gestión de tokens JWT",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.access_token);",
+                  "    pm.environment.set('userId', jsonData.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student1@universidad.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Carreras",
+      "description": "Gestión de carreras académicas",
+      "item": [
+        {
+          "name": "Obtener todas las carreras",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "disabled": false
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/carrera",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["carrera"]
+            }
+          }
+        },
+        {
+          "name": "Obtener carrera por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/carrera/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["carrera", "1"]
+            }
+          }
+        },
+        {
+          "name": "Obtener carrera por nombre",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/carrera/nombre/Ingeniería%20en%20Sistemas",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["carrera", "nombre", "Ingeniería en Sistemas"]
+            }
+          }
+        },
+        {
+          "name": "Crear nueva carrera",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ingeniería en Software\",\n  \"duracion\": 5\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/carrera",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["carrera"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Materias",
+      "description": "Gestión de materias/cursos",
+      "item": [
+        {
+          "name": "Obtener materias por carrera",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/materia/by-carrera/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["materia", "by-carrera", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ciclos",
+      "description": "Gestión de ciclos académicos",
+      "item": [
+        {
+          "name": "Obtener todos los ciclos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/ciclo",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["ciclo"]
+            }
+          }
+        },
+        {
+          "name": "Obtener ciclo por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/ciclo/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["ciclo", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear ciclo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": 5,\n  \"carreraId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/ciclo",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["ciclo"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Estudiantes",
+      "description": "Gestión de estudiantes",
+      "item": [
+        {
+          "name": "Obtener estudiantes activos con carrera",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/estudiante/active-with-career",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["estudiante", "active-with-career"]
+            }
+          }
+        },
+        {
+          "name": "Buscar estudiantes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/estudiante/search?nombre=Juan",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["estudiante", "search"],
+              "query": [
+                {
+                  "key": "nombre",
+                  "value": "Juan"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear estudiante",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos\",\n  \"apellido\": \"Mendez\",\n  \"correo\": \"carlos.mendez@estudiante.com\",\n  \"carreraId\": 1,\n  \"cicloId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/estudiante",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["estudiante"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Docentes",
+      "description": "Gestión de docentes",
+      "item": [
+        {
+          "name": "Docentes con múltiples materias",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/docente/multiple-subjects",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["docente", "multiple-subjects"]
+            }
+          }
+        },
+        {
+          "name": "Buscar docentes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/docente/search?nombre=Rodriguez",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["docente", "search"],
+              "query": [
+                {
+                  "key": "nombre",
+                  "value": "Rodriguez"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inscripciones",
+      "description": "Gestión de inscripciones de estudiantes",
+      "item": [
+        {
+          "name": "Obtener inscripciones por estudiante y ciclo",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/inscripcion/student/1/ciclo/2024-I",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["inscripcion", "student", "1", "ciclo", "2024-I"]
+            }
+          }
+        },
+        {
+          "name": "Reporte de inscripciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/inscripcion/report",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["inscripcion", "report"]
+            }
+          }
+        },
+        {
+          "name": "Inscribir estudiante a materia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estudianteId\": 1,\n  \"materiaId\": 1,\n  \"cicloAcademico\": \"2024-I\",\n  \"notaFinal\": null\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/inscripcion/enroll",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["inscripcion", "enroll"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reportes",
+      "description": "Reportes y analytics",
+      "item": [
+        {
+          "name": "Crear reporte académico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estudianteId\": 1,\n  \"nombreEstudiante\": \"Juan Pérez\",\n  \"carrera\": \"Ingeniería en Sistemas\",\n  \"promedio\": 3.8,\n  \"creditosAprobados\": 45,\n  \"creditosReprobados\": 3,\n  \"tasaAprobacion\": 0.94,\n  \"semestre\": \"2024-I\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/reportes/academico",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["reportes", "academico"]
+            }
+          }
+        },
+        {
+          "name": "Obtener reportes académicos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/reportes/academico",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["reportes", "academico"]
+            }
+          }
+        },
+        {
+          "name": "Crear reporte de docente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"docenteId\": 1,\n  \"nombreDocente\": \"Dr. García\",\n  \"especialidad\": \"Sistemas\",\n  \"materiasImpartidas\": 3,\n  \"estudiantesAtendidos\": 120,\n  \"calificacionPromedio\": 4.2,\n  \"semestre\": \"2024-I\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/reportes/docente",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["reportes", "docente"]
+            }
+          }
+        },
+        {
+          "name": "Obtener reportes de docentes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/reportes/docente",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["reportes", "docente"]
+            }
+          }
+        },
+        {
+          "name": "Crear reporte de carrera",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carreraId\": 1,\n  \"nombreCarrera\": \"Ingeniería en Sistemas\",\n  \"totalEstudiantes\": 250,\n  \"totalDocentes\": 15,\n  \"totalMaterias\": 45,\n  \"tasaAprobacionGral\": 0.85,\n  \"semestre\": \"2024-I\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/reportes/carrera",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["reportes", "carrera"]
+            }
+          }
+        },
+        {
+          "name": "Obtener reportes de carreras",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/reportes/carrera",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["reportes", "carrera"]
+            }
+          }
+        },
+        {
+          "name": "Obtener estadísticas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/reportes/estadisticas",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["reportes", "estadisticas"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Status API",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["/"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

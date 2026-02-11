@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `${__dirname}/../.env.local` });
+require('dotenv').config({ path: `${__dirname}/../.env` });
 
 const { PrismaClient } = require('@prisma/client-reportes');
 const { PrismaPg } = require('@prisma/adapter-pg');

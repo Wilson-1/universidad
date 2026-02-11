@@ -1,0 +1,26 @@
+Email,Password,Rol,Nombre,Apellido,Status
+estudiante@universidad.com,password123,student,Estudiante,Principal,Activo
+profesor@universidad.com,password123,teacher,Profesor,Principal,Activo
+admin@universidad.com,password123,admin,Administrador,Sistema,Activo
+
+# Estudiantes en BD Universidad
+ID,Nombre,Apellido,Email,Carrera,Ciclo,Estado
+1,Juan,Pérez,juan.perez@estudiante.com,Ingeniería en Sistemas,1,Activo
+2,María,López,maria.lopez@estudiante.com,Ingeniería en Sistemas,1,Activo
+3,Carlos,García,carlos.garcia@estudiante.com,Administración de Empresas,1,Activo
+4,Ana,Martínez,ana.martinez@estudiante.com,Derecho,1,Activo
+5,Roberto,Sánchez,roberto.sanchez@estudiante.com,Ingeniería en Sistemas,2,Activo
+6,Laura,Rodríguez,laura.rodriguez@estudiante.com,Administración de Empresas,1,Activo
+
+# Carreras Disponibles
+ID,Nombre,Duración
+1,Ingeniería en Sistemas,5 años
+2,Administración de Empresas,4 años
+3,Derecho,5 años
+
+# Ciclos
+ID,Número,Carrera,Estado
+1,1,Ingeniería en Sistemas,Activo
+2,2,Ingeniería en Sistemas,Activo
+3,1,Administración de Empresas,Activo
+4,1,Derecho,Activo

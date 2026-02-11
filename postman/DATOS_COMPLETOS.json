@@ -1,0 +1,389 @@
+{
+  "title": "Universidad API - Credenciales y Datos de Prueba",
+  "version": "2026-02-04",
+  "baseUrl": "http://localhost:3000",
+  "credentials": {
+    "student": {
+      "email": "estudiante@universidad.com",
+      "password": "password123",
+      "role": "student",
+      "fullName": "Estudiante Principal"
+    },
+    "teacher": {
+      "email": "profesor@universidad.com",
+      "password": "password123",
+      "role": "teacher",
+      "fullName": "Profesor Principal"
+    },
+    "admin": {
+      "email": "admin@universidad.com",
+      "password": "password123",
+      "role": "admin",
+      "fullName": "Administrador Sistema"
+    }
+  },
+  "students_in_system": [
+    {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "email": "juan.perez@estudiante.com",
+      "carrera": "Ingeniería en Sistemas",
+      "ciclo": 1,
+      "activo": true
+    },
+    {
+      "id": 2,
+      "nombre": "María",
+      "apellido": "López",
+      "email": "maria.lopez@estudiante.com",
+      "carrera": "Ingeniería en Sistemas",
+      "ciclo": 1,
+      "activo": true
+    },
+    {
+      "id": 3,
+      "nombre": "Carlos",
+      "apellido": "García",
+      "email": "carlos.garcia@estudiante.com",
+      "carrera": "Administración de Empresas",
+      "ciclo": 1,
+      "activo": true
+    },
+    {
+      "id": 4,
+      "nombre": "Ana",
+      "apellido": "Martínez",
+      "email": "ana.martinez@estudiante.com",
+      "carrera": "Derecho",
+      "ciclo": 1,
+      "activo": true
+    },
+    {
+      "id": 5,
+      "nombre": "Roberto",
+      "apellido": "Sánchez",
+      "email": "roberto.sanchez@estudiante.com",
+      "carrera": "Ingeniería en Sistemas",
+      "ciclo": 2,
+      "activo": true
+    },
+    {
+      "id": 6,
+      "nombre": "Laura",
+      "apellido": "Rodríguez",
+      "email": "laura.rodriguez@estudiante.com",
+      "carrera": "Administración de Empresas",
+      "ciclo": 1,
+      "activo": true
+    }
+  ],
+  "carreras": [
+    {
+      "id": 1,
+      "nombre": "Ingeniería en Sistemas",
+      "duracion": 5,
+      "estudiantes": 3
+    },
+    {
+      "id": 2,
+      "nombre": "Administración de Empresas",
+      "duracion": 4,
+      "estudiantes": 2
+    },
+    {
+      "id": 3,
+      "nombre": "Derecho",
+      "duracion": 5,
+      "estudiantes": 1
+    }
+  ],
+  "ciclos": [
+    {
+      "id": 1,
+      "numero": 1,
+      "carrera_id": 1,
+      "carrera": "Ingeniería en Sistemas"
+    },
+    {
+      "id": 2,
+      "numero": 2,
+      "carrera_id": 1,
+      "carrera": "Ingeniería en Sistemas"
+    },
+    {
+      "id": 3,
+      "numero": 1,
+      "carrera_id": 2,
+      "carrera": "Administración de Empresas"
+    },
+    {
+      "id": 4,
+      "numero": 1,
+      "carrera_id": 3,
+      "carrera": "Derecho"
+    }
+  ],
+  "docentes": [
+    {
+      "id": 1,
+      "nombre": "García",
+      "especialidad": "Sistemas",
+      "materias": 3,
+      "activo": true
+    },
+    {
+      "id": 2,
+      "nombre": "Rodríguez",
+      "especialidad": "Administración",
+      "materias": 2,
+      "activo": true
+    },
+    {
+      "id": 3,
+      "nombre": "Martínez",
+      "especialidad": "Derecho",
+      "materias": 2,
+      "activo": true
+    },
+    {
+      "id": 4,
+      "nombre": "Sánchez",
+      "especialidad": "Sistemas",
+      "materias": 1,
+      "activo": true
+    }
+  ],
+  "endpoints": {
+    "auth": [
+      {
+        "method": "POST",
+        "path": "/auth/login",
+        "description": "Obtener JWT token",
+        "auth_required": false,
+        "example_body": {
+          "email": "estudiante@universidad.com",
+          "password": "password123"
+        }
+      }
+    ],
+    "carreras": [
+      {
+        "method": "GET",
+        "path": "/carrera",
+        "description": "Obtener todas las carreras",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/carrera/:id",
+        "description": "Obtener carrera por ID",
+        "auth_required": true,
+        "example_path": "/carrera/1"
+      },
+      {
+        "method": "POST",
+        "path": "/carrera",
+        "description": "Crear nueva carrera",
+        "auth_required": true,
+        "example_body": {
+          "nombre": "Ingeniería Civil",
+          "duracion": 5
+        }
+      }
+    ],
+    "estudiantes": [
+      {
+        "method": "GET",
+        "path": "/estudiante/active-with-career",
+        "description": "Obtener estudiantes activos",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/estudiante/search",
+        "description": "Buscar estudiantes",
+        "auth_required": true,
+        "example_query": "?nombre=Juan"
+      },
+      {
+        "method": "POST",
+        "path": "/estudiante",
+        "description": "Crear nuevo estudiante",
+        "auth_required": true,
+        "example_body": {
+          "nombre": "Diego",
+          "apellido": "López",
+          "correo": "diego.lopez@estudiante.com",
+          "carreraId": 1,
+          "cicloId": 1
+        }
+      }
+    ],
+    "materias": [
+      {
+        "method": "GET",
+        "path": "/materia/by-carrera/:carreraId",
+        "description": "Obtener materias por carrera",
+        "auth_required": true,
+        "example_path": "/materia/by-carrera/1"
+      }
+    ],
+    "ciclos": [
+      {
+        "method": "GET",
+        "path": "/ciclo",
+        "description": "Obtener todos los ciclos",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/ciclo/:id",
+        "description": "Obtener ciclo por ID",
+        "auth_required": true,
+        "example_path": "/ciclo/1"
+      },
+      {
+        "method": "POST",
+        "path": "/ciclo",
+        "description": "Crear nuevo ciclo",
+        "auth_required": true,
+        "example_body": {
+          "numero": 5,
+          "carreraId": 1
+        }
+      }
+    ],
+    "docentes": [
+      {
+        "method": "GET",
+        "path": "/docente/multiple-subjects",
+        "description": "Docentes con múltiples materias",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/docente/search",
+        "description": "Buscar docentes",
+        "auth_required": true,
+        "example_query": "?nombre=García"
+      }
+    ],
+    "inscripciones": [
+      {
+        "method": "GET",
+        "path": "/inscripcion/student/:id/ciclo/:ciclo",
+        "description": "Inscripciones del estudiante",
+        "auth_required": true,
+        "example_path": "/inscripcion/student/1/ciclo/2024-I"
+      },
+      {
+        "method": "GET",
+        "path": "/inscripcion/report",
+        "description": "Reporte de inscripciones",
+        "auth_required": true
+      },
+      {
+        "method": "POST",
+        "path": "/inscripcion/enroll",
+        "description": "Inscribir estudiante",
+        "auth_required": true,
+        "example_body": {
+          "estudianteId": 1,
+          "materiaId": 1,
+          "cicloAcademico": "2024-I"
+        }
+      }
+    ],
+    "reportes": [
+      {
+        "method": "POST",
+        "path": "/reportes/academico",
+        "description": "Crear reporte académico",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/reportes/academico",
+        "description": "Obtener reportes académicos",
+        "auth_required": true
+      },
+      {
+        "method": "POST",
+        "path": "/reportes/docente",
+        "description": "Crear reporte de docente",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/reportes/docente",
+        "description": "Obtener reportes de docentes",
+        "auth_required": true
+      },
+      {
+        "method": "POST",
+        "path": "/reportes/carrera",
+        "description": "Crear reporte de carrera",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/reportes/carrera",
+        "description": "Obtener reportes de carreras",
+        "auth_required": true
+      },
+      {
+        "method": "GET",
+        "path": "/reportes/estadisticas",
+        "description": "Obtener estadísticas",
+        "auth_required": true
+      }
+    ]
+  },
+  "permissions": {
+    "admin": [
+      "crear_carrera",
+      "editar_carrera",
+      "ver_reportes",
+      "crear_reportes"
+    ],
+    "teacher": [
+      "ver_reportes",
+      "crear_reportes"
+    ],
+    "student": [
+      "ver_reportes"
+    ]
+  },
+  "headers": {
+    "required": [
+      "Content-Type: application/json",
+      "Authorization: Bearer <token>"
+    ],
+    "optional": []
+  },
+  "databases": {
+    "universidad": {
+      "tables": 6,
+      "records": 32,
+      "purpose": "Gestión académica"
+    },
+    "usuarios": {
+      "tables": 5,
+      "records": 10,
+      "purpose": "Autenticación y usuarios"
+    },
+    "reportes": {
+      "tables": 4,
+      "records": 9,
+      "purpose": "Analytics y reportes"
+    }
+  },
+  "quick_start": {
+    "step1": "Login con estudiante@universidad.com / password123",
+    "step2": "Copia el access_token",
+    "step3": "Usa token en header: Authorization: Bearer <token>",
+    "step4": "Prueba GET /carrera",
+    "step5": "Explora otros endpoints"
+  }
+}
